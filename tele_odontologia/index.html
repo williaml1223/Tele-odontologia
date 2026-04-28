@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teleodontología Premium | Dr. Williams Morillo</title>
+    <link rel="stylesheet" href="tele-style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;600;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-gradient: linear-gradient(135deg, #0070f3 0%, #7928ca 100%);
+            --glass-bg: rgba(255, 255, 255, 0.7);
+        }
+        body { font-family: 'Plus Jakarta Sans', sans-serif; overflow-x: hidden; }
+        
+        /* Fondo animado sutil */
+        .bg-blob {
+            position: fixed; top: -10%; left: -10%; width: 500px; height: 500px;
+            background: rgba(0, 112, 243, 0.15); filter: blur(100px); border-radius: 50%; z-index: -1; animation: move 20s infinite alternate;
+        }
+        @keyframes move { from { transform: translate(0,0); } to { transform: translate(100px, 100px); } }
+
+        .hero { padding: 120px 20px 60px; text-align: center; }
+        .hero h1 { font-size: 4rem; font-weight: 800; background: var(--primary-gradient); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin-bottom: 20px; line-height: 1.1; }
+        .hero p { font-size: 1.4rem; color: #475569; max-width: 800px; margin: 0 auto 40px; }
+
+        .feature-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-top: 50px; }
+        .feature-card { 
+            padding: 40px; text-align: left; transition: 0.4s; position: relative; overflow: hidden;
+            border: 1px solid rgba(255,255,255,0.4);
+        }
+        .feature-card:hover { transform: translateY(-10px); box-shadow: 0 30px 60px rgba(0,0,0,0.1); }
+        .feature-card h3 { font-size: 1.5rem; margin-bottom: 15px; color: #0f172a; }
+        
+        .step-indicator { 
+            display: inline-block; width: 40px; height: 40px; background: var(--primary-gradient); 
+            color: white; border-radius: 50%; line-height: 40px; text-align: center; font-weight: bold; margin-bottom: 20px;
+        }
+
+        .cta-main {
+            font-size: 1.2rem; padding: 20px 50px; border-radius: 50px; 
+            box-shadow: 0 10px 30px rgba(0, 112, 243, 0.3);
+        }
+
+        @media (max-width: 768px) { .hero h1 { font-size: 2.5rem; } }
+    </style>
+    <a href="registro.html" class="btn-tele">🚀 Enviar Mi Caso Ahora</a>
+</head>
+<body>
+    <div class="bg-blob"></div>
+
+    <div class="container">
+        <header class="hero">
+            <span style="background: rgba(0,112,243,0.1); color: #0070f3; padding: 8px 20px; border-radius: 50px; font-weight: 600; font-size: 0.9rem;">✨ Innovación Dental en Lechería</span>
+            <h1>Tu Nueva Sonrisa <br>Comienza con un Clic</h1>
+            <p>Obtén un diagnóstico profesional y un diseño de sonrisa personalizado desde la comodidad de tu casa.</p>
+            <a href="registro.html" class="btn-tele cta-main">🚀 Enviar Mi Caso Ahora</a>
+        </header>
+
+        <section class="feature-grid">
+            <div class="glass-card feature-card">
+                <div class="step-indicator">1</div>
+                <h3>Regístrate en Segundos</h3>
+                <p>Crea tu cuenta segura y cuéntanos qué te gustaría mejorar de tu sonrisa.</p>
+            </div>
+            <div class="glass-card feature-card">
+                <div class="step-indicator">2</div>
+                <h3>Sube tus Fotos</h3>
+                <p>Sigue nuestra guía visual para capturar los ángulos clave con tu celular.</p>
+            </div>
+            <div class="glass-card feature-card">
+                <div class="step-indicator">3</div>
+                <h3>Recibe tu Plan Pro</h3>
+                <p>Descarga tu diagnóstico en PDF con presupuesto oficial en USD y Bolívares (BCV).</p>
+            </div>
+        </section>
+
+        <section style="margin-top: 100px; text-align: center;">
+            <h2 style="font-size: 2.5rem; margin-bottom: 50px;">¿Por qué elegir nuestra plataforma?</h2>
+            <div style="display: flex; flex-wrap: wrap; justify-content: center; gap: 40px;">
+                <div style="max-width: 250px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">⏰</div>
+                    <h4 style="margin:0;">Sin Tráfico</h4>
+                    <p style="font-size: 0.9rem; color: #64748b;">Evita los traslados en la Av. Intercomunal.</p>
+                </div>
+                <div style="max-width: 250px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">🛡️</div>
+                    <h4 style="margin:0;">Diagnóstico Experto</h4>
+                    <p style="font-size: 0.9rem; color: #64748b;">Evaluación detallada por el Dr. Williams Morillo.</p>
+                </div>
+                <div style="max-width: 250px;">
+                    <div style="font-size: 3rem; margin-bottom: 15px;">📊</div>
+                    <h4 style="margin:0;">Tasa Oficial</h4>
+                    <p style="font-size: 0.9rem; color: #64748b;">Transparencia total con la tasa del BCV.</p>
+                </div>
+            </div>
+        </section>
+
+        <footer style="margin-top: 100px; padding: 40px; text-align: center; border-top: 1px solid #e2e8f0; color: #94a3b8; font-size: 0.9rem;">
+            <p>&copy; 2026 Dr. Williams Morillo - Odontología Estética y Digital. Lechería, Venezuela.</p>
+        </footer>
+    </div>
+</body>
+</html>

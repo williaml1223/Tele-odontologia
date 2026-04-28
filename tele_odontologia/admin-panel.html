@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Panel Administrativo | DentalApp Pro</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.25/jspdf.plugin.autotable.min.js"></script>
+    <link rel="stylesheet" href="tele-style.css">
+    <style>
+        .admin-layout { display: grid; grid-template-columns: 300px 1fr; gap: 30px; padding: 30px; }
+        .sidebar-admin { background: white; padding: 25px; border-radius: 25px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); height: fit-content; }
+        .case-card { background: white; padding: 25px; border-radius: 20px; border: 1px solid #e2e8f0; margin-bottom: 20px; }
+        .treatment-list { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin: 15px 0; background: #f8fafc; padding: 15px; border-radius: 12px; }
+        .treatment-item { display: flex; align-items: center; gap: 8px; font-size: 0.85rem; cursor: pointer; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+        th, td { padding: 12px; text-align: left; border-bottom: 1px solid #f1f5f9; }
+    </style>
+</head>
+<body>
+    <div class="admin-layout">
+        <aside class="sidebar-admin">
+            <h2 style="color: #0070f3; margin-bottom: 5px;">🦷 Admin</h2>
+            <p style="font-size: 0.85rem; color: #64748b; margin-bottom: 25px;">Dr. Williams Morillo</p>
+            
+            <div class="glass-card" style="padding: 15px; background: #f0f7ff;">
+                <label style="font-size: 0.75rem; font-weight: bold; color: #1e40af;">TASA BCV HOY</label>
+                <input type="number" id="tasa-bcv-input" step="0.01" style="width:100%; padding:8px; margin: 10px 0; border-radius:8px; border:1px solid #cbd5e1;">
+                <button onclick="fetchBCV()" class="btn-tele" style="width:100%; padding:8px; font-size:0.7rem;">🔄 Sincronizar</button>
+                <button onclick="guardarTasaManual()" style="width:100%; margin-top:5px; padding:5px; border:none; background:none; color:#0070f3; cursor:pointer; font-size:0.7rem;">Guardar Manual 💾</button>
+            </div>
+        </aside>
+
+        <main>
+            <h1>Gestión Central de Teleodontología</h1>
+
+            <div class="case-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px;">
+                    <div>
+                        <h3 style="margin: 0;">Paciente: Alejandro Morillo</h3>
+                        <p style="font-size: 0.85rem; color: #64748b;">Motivo: Diseño de Sonrisa y Limpieza</p>
+                    </div>
+                    <span style="background: #dcfce7; color: #166534; padding: 5px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold;">PAGO VERIFICADO</span>
+                </div>
+
+                <div class="treatment-list" id="lista-tratamientos">
+                    <label class="treatment-item"><input type="checkbox" data-name="Resina Nanohíbrida" data-price="35"> Resina ($35)</label>
+                    <label class="treatment-item"><input type="checkbox" data-name="Limpieza Ultrasónica" data-price="40"> Limpieza ($40)</label>
+                    <label class="treatment-item"><input type="checkbox" data-name="Blanqueamiento LED" data-price="120"> Blanqueamiento ($120)</label>
+                    <label class="treatment-item"><input type="checkbox" data-name="Corona de Zirconio" data-price="350"> Prótesis ($350)</label>
+                </div>
+
+                <button class="btn-tele" style="width: 100%;" onclick="generarPDFConTratamientos('Alejandro Morillo', 'V-12.345.678')">
+                    📄 Generar y Descargar Presupuesto PDF
+                </button>
+            </div>
+
+            <div class="case-card">
+                <h3>📥 Respaldo de Pagos Reportados</h3>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Fecha</th>
+                            <th>Referencia</th>
+                            <th>Monto (Bs.)</th>
+                            <th>Estado</th>
+                        </tr>
+                    </thead>
+                    <tbody id="tabla-pagos-respaldo">
+                        </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+<div class="case-card">
+    <div style="display: flex; justify-content: space-between;">
+        <div>
+            <h3 style="margin:0;">Alejandro Morillo</h3>
+            <span style="font-size: 0.7rem; color: #0070f3; font-weight: bold;">🩻 Radiografías Adjuntas</span>
+        </div>
+        <button class="btn-tele" style="padding: 5px 15px; font-size: 0.8rem;">Ver RX</button>
+    </div>
+</div>
+<div class="case-card">
+    <div style="display: flex; justify-content: space-between; align-items: start;">
+        <div>
+            <h3 style="margin:0;">Alejandro Morillo</h3>
+            <p style="font-size: 0.8rem; color: #64748b;">Motivo: Estética Dental</p>
+            <span style="display: inline-block; margin-top: 8px; font-size: 0.7rem; color: #0369a1; background: #e0f2fe; padding: 3px 8px; border-radius: 5px; font-weight: bold;">
+                🩻 RX Adjunta
+            </span>
+        </div>
+        <div style="display: flex; flex-direction: column; gap: 5px;">
+            <button class="btn-tele" style="padding: 8px 15px; font-size: 0.75rem;">Ver Estudios</button>
+            <button class="btn-gen" style="padding: 8px 15px; font-size: 0.75rem;" onclick="demoPDF()">Generar PDF</button>
+        </div>
+    </div>
+</div>
+    <script>
+        // Sincronización y Guardado de Tasa
+        async function fetchBCV() {
+            try {
+                const response = await fetch('https://pydolarvenezuela-api.vercel.app/api/v1/dollar?page=bcv');
+                const data = await response.json();
+                const tasa = data.monitors.usd.price;
+                document.getElementById('tasa-bcv-input').value = tasa;
+                localStorage.setItem('tasa_bcv_dental', tasa);
+            } catch (e) { alert("Error de conexión. Ingrese manual."); }
+        }
+
+        function guardarTasaManual() {
+            const val = document.getElementById('tasa-bcv-input').value;
+            localStorage.setItem('tasa_bcv_dental', val);
+            alert("Tasa guardada correctamente.");
+        }
+
+        // Generador de PDF unificado
+        function generarPDFConTratamientos(nombre, cedula) {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            const tasa = parseFloat(localStorage.getItem('tasa_bcv_dental')) || 45.00;
+            const seleccionados = [];
+            let totalUSD = 0;
+
+            document.querySelectorAll('#lista-tratamientos input:checked').forEach(item => {
+                const nombreT = item.getAttribute('data-name');
+                const precioT = parseFloat(item.getAttribute('data-price'));
+                seleccionados.push([nombreT, `$${precioT}`, `${(precioT * tasa).toLocaleString('es-VE')} Bs.`]);
+                totalUSD += precioT;
+            });
+
+            if(seleccionados.length === 0) return alert("Seleccione al menos un tratamiento.");
+
+            doc.setFontSize(20); doc.setTextColor(0, 112, 243);
+            doc.text("DR. WILLIAMS MORILLO", 20, 25);
+            doc.setFontSize(10); doc.setTextColor(100);
+            doc.text("ODONTÓLOGO - LECHERÍA, VENEZUELA", 20, 32);
+            doc.line(20, 35, 190, 35);
+
+            doc.autoTable({
+                startY: 65,
+                head: [['Tratamiento Sugerido', 'USD', 'Bs. (BCV)']],
+                body: seleccionados,
+                headStyles: { fillStyle: [0, 112, 243] }
+            });
+
+            doc.save(`Presupuesto_${nombre}.pdf`);
+        }
+
+        // Cargar datos al iniciar
+        window.onload = () => {
+            document.getElementById('tasa-bcv-input').value = localStorage.getItem('tasa_bcv_dental') || "45.00";
+            const tabla = document.getElementById('tabla-pagos-respaldo');
+            const historial = JSON.parse(localStorage.getItem('pagos_recibidos')) || [];
+            tabla.innerHTML = historial.reverse().map(pago => `
+                <tr>
+                    <td>${pago.fecha}</td>
+                    <td>#${pago.ref}</td>
+                    <td>${pago.monto} Bs.</td>
+                    <td><span style="color:#f59e0b; font-weight:bold;">${pago.estado}</span></td>
+                </tr>
+            `).join('');
+        };
+    </script>
+</body>
+</html>

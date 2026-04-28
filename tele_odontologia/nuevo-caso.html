@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Enviar Caso | DentalApp Pro</title>
+    <link rel="stylesheet" href="tele-style.css">
+    <style>
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-weight: 600; margin-bottom: 5px; color: #475569; }
+        input, textarea, select { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #e2e8f0; box-sizing: border-box; }
+        .upload-box { border: 2px dashed #cbd5e1; padding: 30px; text-align: center; border-radius: 15px; background: #f1f5f9; cursor: pointer; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card">
+            <h2>📝 Formulario de Diagnóstico Digital</h2>
+            <form action="pago.html">
+                <div class="form-group">
+                    <label>Cédula de Identidad (V-)</label>
+                    <input type="text" placeholder="Ej: V-12345678" required>
+                </div>
+                <div class="form-group">
+                    <label>¿Qué le preocupa de su sonrisa? (Motivo de consulta)</label>
+                    <textarea rows="3" placeholder="Escriba aquí sus dudas..." required></textarea>
+                </div>
+
+                <div class="form-group">
+                    <label>📸 Subir Fotos (Siga la guía visual)</label>
+                    <div class="upload-box" onclick="document.getElementById('file-up').click()">
+                        <p>Haz clic para subir tus 5 fotos clave (Frente, Laterales, Oclusal)</p>
+                        <input type="file" id="file-up" multiple hidden>
+                    </div>
+                </div>
+
+                <div class="form-group" style="background: #fff; padding: 15px; border-radius: 10px; border: 1px solid #fecaca;">
+                    <label style="display: flex; gap: 10px; cursor: pointer;">
+                        <input type="checkbox" style="width: auto;" required>
+                        <span style="font-size: 0.8rem;">
+                            Yo declaro que he leído y acepto el <b>Consentimiento Informado</b> para teleodontología en Venezuela.
+                        </span>
+                    </label>
+                </div>
+
+                <button type="submit" class="btn-tele" style="width: 100%;">Proceder al Pago</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

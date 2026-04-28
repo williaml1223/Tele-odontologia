@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Subir RX | DentalApp Pro</title>
+    <link rel="stylesheet" href="tele-style.css">
+    <style>
+        .rx-upload-zone { border: 2px dashed #cbd5e1; padding: 40px; text-align: center; border-radius: 20px; background: #f8fafc; cursor: pointer; }
+        .rx-options { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 20px; }
+        .rx-tag { padding: 10px; border: 1px solid #e2e8f0; border-radius: 10px; font-size: 0.8rem; cursor: pointer; text-align: center; }
+        .rx-tag.selected { background: #0070f3; color: white; border-color: #0070f3; }
+        input[type="date"] { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; margin-bottom: 20px; box-sizing: border-box; }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="glass-card" style="max-width: 600px; margin: 40px auto;">
+            <h2>🩻 Centro de Radiología</h2>
+            <p style="color: #64748b; margin-bottom: 25px;">Adjunta tus estudios para un diagnóstico de alta precisión.</p>
+
+            <label style="display:block; font-weight:bold; margin-bottom:10px;">1. Tipo de estudio:</label>
+            <div class="rx-options">
+                <div class="rx-tag" onclick="this.classList.toggle('selected')">Panorámica</div>
+                <div class="rx-tag" onclick="this.classList.toggle('selected')">Periapicales</div>
+                <div class="rx-tag" onclick="this.classList.toggle('selected')">Tomografía</div>
+            </div>
+
+            <label style="display:block; font-weight:bold; margin-bottom:10px;">2. Fecha del estudio:</label>
+            <input type="date" id="fecha-rx" required>
+
+            <div class="rx-upload-zone" onclick="document.getElementById('rx-input').click()">
+                <p id="rx-status">Toca para seleccionar el archivo (JPG o PDF)</p>
+                <input type="file" id="rx-input" hidden onchange="document.getElementById('rx-status').innerText = 'Archivo listo ✅'">
+            </div>
+
+            <button class="btn-tele" style="width: 100%; margin-top: 25px;" onclick="enviarRXWhatsApp()">
+                Enviar Estudio al Dr. Williams 🚀
+            </button>
+        </div>
+    </div>
+
+    <script>
+        function enviarRXWhatsApp() {
+            const fecha = document.getElementById('fecha-rx').value;
+            const tipos = Array.from(document.querySelectorAll('.rx-tag.selected')).map(t => t.innerText).join(", ");
+            
+            if(!fecha || !tipos) return alert("Por favor completa la fecha y el tipo de estudio.");
+
+            const mensaje = `*NUEVO ESTUDIO RX*%0A*Paciente:* Alejandro Morillo%0A*Tipo:* ${tipos}%0A*Fecha:* ${fecha}%0A---%0A_Adjunto el archivo en este chat._`;
+            window.open(`https://wa.me/584248548251?text=${mensaje}`, '_blank');
+            window.location.href = 'dashboard.html';
+        }
+    </script>
+</body>
+</html>

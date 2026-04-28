@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Crear Cuenta | DentalApp Pro</title>
+    <link rel="stylesheet" href="tele-style.css">
+    <style>
+        .register-card { max-width: 450px; margin: 60px auto; padding: 40px; }
+        .form-group { margin-bottom: 20px; text-align: left; }
+        label { display: block; font-weight: 600; margin-bottom: 8px; color: #475569; font-size: 0.9rem; }
+        input { width: 100%; padding: 12px; border-radius: 12px; border: 1px solid #e2e8f0; box-sizing: border-box; }
+        input:focus { outline: none; border-color: #0070f3; box-shadow: 0 0 0 3px rgba(0, 112, 243, 0.1); }
+        .login-footer { margin-top: 25px; font-size: 0.85rem; color: #64748b; }
+        .login-footer a { color: #0070f3; font-weight: bold; text-decoration: none; }
+    </style>
+</head>
+<body>
+    <div class="container" style="text-align: center;">
+        <div class="glass-card register-card">
+            <h2 style="margin-bottom: 10px;">Comienza tu Transformación</h2>
+            <p style="color: #64748b; font-size: 0.9rem; margin-bottom: 30px;">Regístrate para acceder a tu diagnóstico personalizado con el Dr. Williams.</p>
+
+            <form onsubmit="manejarRegistro(event)">
+                <div class="form-group">
+                    <label>Nombre y Apellido</label>
+                    <input type="text" id="reg-nombre" placeholder="Ej: Alejandro Morillo" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Correo Electrónico</label>
+                    <input type="email" id="reg-email" placeholder="tu@email.com" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Cédula de Identidad</label>
+                    <input type="text" id="reg-cedula" placeholder="V-12345678" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Contraseña</label>
+                    <input type="password" id="reg-pass" placeholder="••••••••" required>
+                </div>
+
+                <button type="submit" class="btn-tele" style="width: 100%; padding: 15px; margin-top: 10px;">
+                    Crear Cuenta y Entrar 🚀
+                </button>
+            </form>
+
+            <p class="login-footer">¿Ya tienes una cuenta? <a href="login.html">Inicia Sesión</a></p>
+        </div>
+    </div>
+
+    <script>
+        function manejarRegistro(e) {
+            e.preventDefault();
+            
+            // Capturamos el nombre para que el Dashboard lo salude
+            const nombre = document.getElementById('reg-nombre').value;
+            const cedula = document.getElementById('reg-cedula').value;
+            
+            // Guardamos la sesión localmente
+            localStorage.setItem('paciente_nombre', nombre);
+            localStorage.setItem('paciente_cedula', cedula);
+            
+            // Redirigimos al Dashboard
+            window.location.href = "dashboard.html";
+        }
+    </script>
+</body>
+</html>
