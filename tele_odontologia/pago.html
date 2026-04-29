@@ -2,126 +2,105 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <title>Reportar Pago | DentalApp Pro</title>
+    <title>Finalizar Pago | DentalApp Pro</title>
     <link rel="stylesheet" href="tele-style.css">
     <style>
-        .payment-card { max-width: 600px; margin: 40px auto; }
-        .converter-box {
-            background: #f0f7ff;
-            padding: 20px;
-            border-radius: 15px;
-            border: 1px solid #dbeafe;
-            margin-bottom: 25px;
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 15px;
-        }
-        .form-group { margin-bottom: 15px; text-align: left; }
-        label { display: block; font-weight: 700; margin-bottom: 5px; color: #1e40af; font-size: 0.8rem; }
-        input { 
-            width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; 
-            font-size: 1.1rem; font-weight: bold; color: #0f172a;
-        }
-        .tasa-tag {
-            grid-column: span 2; text-align: center; font-size: 0.75rem;
-            color: #64748b; margin-top: 5px; font-style: italic;
-        }
-        .capture-upload {
-            border: 2px dashed #cbd5e1; padding: 20px; text-align: center; border-radius: 12px;
-            background: #f8fafc; cursor: pointer; margin-top: 10px;
-        }
-        #preview-img { max-width: 100%; margin-top: 15px; border-radius: 8px; display: none; }
+        .converter-box { background: #f0f7ff; padding: 20px; border-radius: 20px; margin-bottom: 25px; border: 1px solid #0070f3; }
+        .payment-method-card { background: white; padding: 20px; border-radius: 15px; margin-bottom: 15px; border: 2px solid #f1f5f9; cursor: pointer; transition: 0.3s; }
+        .payment-method-card:hover { border-color: #0070f3; }
+        .payment-method-card.active { border-color: #0070f3; background: #fff; box-shadow: 0 10px 20px rgba(0,0,0,0.05); }
+        .data-box { background: #f8fafc; padding: 15px; border-radius: 12px; margin-top: 10px; border: 1px solid #e2e8f0; display: none; }
+        .currency-input-group { display: flex; gap: 10px; align-items: center; margin-top: 10px; }
+        input[type="number"], input[type="text"] { width: 100%; padding: 12px; border-radius: 10px; border: 1px solid #cbd5e1; box-sizing: border-box; }
+        .label-small { font-size: 0.75rem; font-weight: bold; color: #64748b; display: block; margin-bottom: 5px; }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="glass-card payment-card">
-            <h2 style="margin-bottom: 5px;">💳 Reportar Pago</h2>
-            <p style="color: #64748b; margin-bottom: 20px; font-size: 0.9rem;">Calcula tu monto y adjunta el comprobante.</p>
-
+        <div class="glass-card" style="max-width: 600px; margin: 20px auto;">
+            <h2 style="text-align: center; margin-bottom: 5px;">💳 Pago y Conversión</h2>
+            <p style="text-align: center; color: #64748b; font-size: 0.9rem; margin-bottom: 20px;">Tasa BCV del día: <b id="display-tasa">--</b> Bs.</p>
+            
             <div class="converter-box">
-                <div class="form-group">
-                    <label>MONTO EN DÓLARES ($)</label>
-                    <input type="number" id="monto-usd" placeholder="0.00" oninput="convertir('USD')">
-                </div>
-                <div class="form-group">
-                    <label>MONTO EN BOLÍVARES (Bs)</label>
-                    <input type="number" id="monto-bs" placeholder="0.00" oninput="convertir('BS')">
-                </div>
-                <div class="tasa-tag" id="tasa-info">Cargando tasa oficial...</div>
-            </div>
-
-            <form id="form-pago" onsubmit="procesarPago(event)">
-                <div class="form-group">
-                    <label style="color: #475569;">NÚMERO DE REFERENCIA</label>
-                    <input type="text" id="referencia" required placeholder="Ej: 984521">
-                </div>
-
-                <div class="form-group">
-                    <label style="color: #475569;">📸 CAPTURE DE PANTALLA</label>
-                    <div class="capture-upload" onclick="document.getElementById('file').click()">
-                        <p id="txt-file" style="font-size: 0.8rem;">Toca para subir la prueba del pago</p>
-                        <input type="file" id="file" accept="image/*" hidden onchange="previsualizar(this)">
-                        <img id="preview-img">
+                <div class="currency-input-group">
+                    <div style="flex: 1;">
+                        <label class="label-small">MONTO EN USD</label>
+                        <input type="number" id="input-usd" value="25" oninput="convertirABs()">
+                    </div>
+                    <div style="font-size: 1.5rem; margin-top: 15px;">⇌</div>
+                    <div style="flex: 1;">
+                        <label class="label-small">MONTO EN BS.</label>
+                        <input type="text" id="input-bs" readonly style="background: #e2e8f0; font-weight: bold; color: #1e40af;">
                     </div>
                 </div>
+                <p style="font-size: 0.7rem; color: #1e40af; margin-top: 10px; text-align: center;">Puedes ajustar el monto si el Dr. te indicó un precio diferente.</p>
+            </div>
 
-                <button type="submit" class="btn-tele" style="width: 100%; padding: 18px; margin-top: 10px;">
-                    ✅ Informar Pago al Dr. Williams
+            <h3>Selecciona Método de Pago</h3>
+            
+            <div class="payment-method-card" onclick="showData('pm-data', this)">
+                <strong>📲 Pago Móvil</strong>
+                <div id="pm-data" class="data-box">
+                    <p style="margin: 5px 0;"><b>Banco:</b> Mercantil (0105)</p>
+                    <p style="margin: 5px 0;"><b>Teléfono:</b> 04248548251</p>
+                    <p style="margin: 5px 0;"><b>Cédula:</b> V-12.345.678</p>
+                </div>
+            </div>
+
+            <div class="payment-method-card" onclick="showData('zelle-data', this)">
+                <strong>💸 Zelle / Transferencia USA</strong>
+                <div id="zelle-data" class="data-box">
+                    <p style="margin: 5px 0;"><b>Correo:</b> pagos@dentalpro.com</p>
+                    <p style="margin: 5px 0;"><b>Titular:</b> Williams Morillo</p>
+                </div>
+            </div>
+
+            <div style="margin-top: 30px;">
+                <label class="label-small">NRO. DE REFERENCIA / CAPTURE</label>
+                <input type="text" id="ref-pago" placeholder="Ej: 852931">
+                
+                <button onclick="enviarPagoWhatsApp()" class="btn-tele" style="width: 100%; margin-top: 15px; padding: 15px;">
+                    Confirmar y Notificar al Dr. 🚀
                 </button>
-            </form>
+            </div>
+            
+            <p style="text-align: center; margin-top: 15px;"><a href="dashboard.html" style="color: #64748b; font-size: 0.8rem; text-decoration: none;">← Volver al Panel</a></p>
         </div>
     </div>
 
     <script>
-        // Obtener la tasa guardada del Panel Administrativo
-        const tasaBCV = parseFloat(localStorage.getItem('tasa_bcv_dental')) || 45.00;
-        document.getElementById('tasa-info').innerText = `Tasa oficial aplicada: 1 $ = ${tasaBCV.toFixed(2)} Bs. (BCV)`;
+        let tasaActual = 45.00;
 
-        function convertir(tipo) {
-            const usdInput = document.getElementById('monto-usd');
-            const bsInput = document.getElementById('monto-bs');
+        window.onload = () => {
+            // Obtener tasa del administrador
+            tasaActual = parseFloat(localStorage.getItem('tasa_bcv_dental')) || 45.00;
+            document.getElementById('display-tasa').innerText = tasaActual.toFixed(2);
+            convertirABs();
+        };
 
-            if (tipo === 'USD') {
-                const resultado = usdInput.value * tasaBCV;
-                bsInput.value = resultado > 0 ? resultado.toFixed(2) : "";
-            } else {
-                const resultado = bsInput.value / tasaBCV;
-                usdInput.value = resultado > 0 ? resultado.toFixed(2) : "";
-            }
+        function convertirABs() {
+            const usd = document.getElementById('input-usd').value;
+            const resultado = usd * tasaActual;
+            document.getElementById('input-bs').value = resultado.toLocaleString('es-VE', {minimumFractionDigits: 2}) + " Bs.";
         }
 
-        function previsualizar(input) {
-            const preview = document.getElementById('preview-img');
-            if (input.files && input.files[0]) {
-                const reader = new FileReader();
-                reader.onload = e => {
-                    preview.src = e.target.result;
-                    preview.style.display = 'block';
-                    document.getElementById('txt-file').innerText = "Imagen cargada ✅";
-                }
-                reader.readAsDataURL(input.files[0]);
-            }
+        function showData(id, element) {
+            document.querySelectorAll('.data-box').forEach(box => box.style.display = 'none');
+            document.querySelectorAll('.payment-method-card').forEach(card => card.classList.remove('active'));
+            document.getElementById(id).style.display = 'block';
+            element.classList.add('active');
         }
 
-        function procesarPago(e) {
-            e.preventDefault();
-            const montoBs = document.getElementById('monto-bs').value;
-            const montoUsd = document.getElementById('monto-usd').value;
-            const ref = document.getElementById('referencia').value;
-            const fecha = new Date().toLocaleString();
-
-            // Guardar en el respaldo del Administrador
-            const historial = JSON.parse(localStorage.getItem('pagos_recibidos')) || [];
-            historial.push({ monto: montoBs, usd: montoUsd, ref, fecha, estado: 'Pendiente' });
-            localStorage.setItem('pagos_recibidos', JSON.stringify(historial));
-
-            // Enviar a WhatsApp
-            const tel = "584248548251";
-            const msg = `*REPORTE DE PAGO*%0A---%0A*Monto:* ${montoUsd}$ (${montoBs} Bs)%0A*Ref:* ${ref}%0A*Tasa:* ${tasaBCV}%0A---%0A_Adjunto el capture abajo:_`;
+        function enviarPagoWhatsApp() {
+            const usd = document.getElementById('input-usd').value;
+            const bs = document.getElementById('input-bs').value;
+            const ref = document.getElementById('ref-pago').value;
             
-            window.open(`https://wa.me/${tel}?text=${msg}`, '_blank');
-            window.location.href = "index.html";
+            if(!ref) return alert("Por favor ingresa la referencia.");
+
+            const mensaje = `*REPORTE DE PAGO*%0A---%0A*Monto:* ${usd} USD (${bs})%0A*Referencia:* ${ref}%0A---%0A_Adjunto el comprobante abajo._`;
+            window.open(`https://wa.me/584248548251?text=${mensaje}`, '_blank');
+            window.location.href = 'dashboard.html';
         }
     </script>
 </body>
